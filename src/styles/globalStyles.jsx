@@ -5,8 +5,7 @@ const GlobalStyles = createGlobalStyle`
         box-sizing: border-box;
         cursor: default;
 	    font-weight: 400;
-        font-size: 20px;
-        line-height: 23px;
+
         ::-webkit-scrollbar {
             display: none;
         }        

@@ -1,55 +1,116 @@
-import { EmailIcon, LockIcon } from '@chakra-ui/icons';
-import { Icon, Input, InputGroup, InputLeftElement, Stack } from '@chakra-ui/react';
+import { EmailIcon, LockIcon, UnlockIcon } from '@chakra-ui/icons';
+import {
+  Icon,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Stack,
+} from '@chakra-ui/react';
 import axios from 'axios';
-import React from 'react';
+import { useState } from 'react';
 import Div100vh from 'react-div-100vh';
 import { BsFillPersonFill } from 'react-icons/bs';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from '../components/mainButton';
 
 export default function Login() {
-  const URL = `${process.env.REACT_APP_BASE_URL}/sing-in`;
-  const handleLogin = () => {
-    axios.post(URL);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [login, setLogin] = useState({
+    name: '',
+    email: '',
+    password: '',
+    repeatPassword: '',
+  });
+  const handleSubmission = (e) => {
+    const URL = `${process.env.REACT_APP_BASE_URL}/sign-up`;
+    e.preventDefault();
+    setLoading(true);
+    const body = { ...login };
+    delete body.repeatPassword;
+    axios
+      .post(URL, body)
+      .then(({ data, status }) => {
+        console.log({ data, status });
+        navigate('/');
+      })
+      .catch(({ response: { data, status } }) => {
+        console.log({ data, status });
+        setLoading(false);
+      });
+  };
+  const handleForm = (e) => {
+    setLogin({ ...login, [e.target.name]: e.target.value });
   };
   return (
     <Page>
       <Logo>MyWallet</Logo>
-      <AllInputs spacing={0}>
-        <InputWrap size='lg'>
-          <InputLeftElement
-            pointerEvents='none'
-            children={<Icon as={BsFillPersonFill} color='gray.300' />}
-          />
-          <Input focusBorderColor='main' variant='flushed' placeholder='name' />
-        </InputWrap>
-        <InputWrap size='lg'>
-          <InputLeftElement pointerEvents='none' children={<EmailIcon color='gray.300' />} />
-          <Input focusBorderColor='main' variant='flushed' placeholder='email' />
-        </InputWrap>
-        <InputWrap size='lg'>
-          <InputLeftElement pointerEvents='none' children={<LockIcon color='gray.300' />} />
-          <Input
-            pr='1rem'
-            focusBorderColor='main'
-            variant='flushed'
-            type='password'
-            placeholder='password'
-          />
-        </InputWrap>
-        <InputWrap size='lg'>
-          <InputLeftElement pointerEvents='none' children={<LockIcon color='gray.300' />} />
-          <Input
-            pr='1rem'
-            focusBorderColor='main'
-            variant='flushed'
-            type='password'
-            placeholder='repeat password'
-          />
-        </InputWrap>
-      </AllInputs>
-      <MainButton>Register</MainButton>
+      <Form onSubmit={handleSubmission}>
+        <AllInputs spacing={0}>
+          <InputWrap size='lg'>
+            <InputLeftElement
+              pointerEvents='none'
+              children={<Icon as={BsFillPersonFill} color='gray.300' />}
+            />
+            <Input
+              name='name'
+              onChange={handleForm}
+              value={login.name}
+              focusBorderColor='main'
+              variant='flushed'
+              placeholder='name'
+            />
+          </InputWrap>
+          <InputWrap size='lg'>
+            <InputLeftElement
+              pointerEvents='none'
+              children={<EmailIcon color='gray.300' />}
+            />
+            <Input
+              name='email'
+              onChange={handleForm}
+              value={login.email}
+              focusBorderColor='main'
+              variant='flushed'
+              placeholder='email'
+            />
+          </InputWrap>
+          <InputWrap size='lg'>
+            <InputLeftElement
+              pointerEvents='none'
+              children={<UnlockIcon color='gray.300' />}
+            />
+            <Input
+              name='password'
+              onChange={handleForm}
+              value={login.password}
+              pr='1rem'
+              focusBorderColor='main'
+              variant='flushed'
+              type='password'
+              placeholder='password'
+            />
+          </InputWrap>
+          <InputWrap size='lg'>
+            <InputLeftElement
+              pointerEvents='none'
+              children={<LockIcon color='gray.300' />}
+            />
+            <Input
+              name='repeatPassword'
+              onChange={handleForm}
+              value={login.repeatPassword}
+              pr='1rem'
+              focusBorderColor='main'
+              variant='flushed'
+              type='password'
+              placeholder='repeat password'
+            />
+          </InputWrap>
+        </AllInputs>
+        <MainButton>Register</MainButton>
+      </Form>
       <StyledLink to='/'>Already have a account? Sign-in!</StyledLink>
     </Page>
   );
@@ -70,9 +131,11 @@ const Logo = styled.p`
   line-height: 3.9rem;
   margin-bottom: 1.5rem;
 `;
-const AllInputs = styled(Stack)`
+const Form = styled.form`
   max-width: ${({ theme }) => theme.sizes.max};
   width: 100%;
+`;
+const AllInputs = styled(Stack)`
   margin: 0.25rem 0;
   background-color: white;
   border-radius: 0.5rem;
