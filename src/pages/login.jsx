@@ -22,7 +22,7 @@ export default function Login({ setToken }) {
       .post(URL, login)
       .then((res) => {
         setToken(res.data);
-        navigate('/transactions');
+        navigate('/records');
       })
       .catch(({ response: { data, status } }) => {
         console.log({ data, status });
@@ -107,7 +107,13 @@ const InputWrap = styled(InputGroup)`
 `;
 
 const StyledLink = styled(Link)`
+  cursor: pointer;
   color: ${({ theme }) => theme.colors.secondary};
   margin-top: 2rem;
   font-family: ${({ theme }) => theme.fonts.body};
+  font-weight: 700;
+
+  :hover {
+    text-decoration: underline;
+  }
 `;

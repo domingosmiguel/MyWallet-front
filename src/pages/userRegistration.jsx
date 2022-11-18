@@ -14,7 +14,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from '../components/mainButton';
 
-export default function Login() {
+export default function userRegistration() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [login, setLogin] = useState({
@@ -27,10 +27,10 @@ export default function Login() {
     const URL = `${process.env.REACT_APP_BASE_URL}/sign-up`;
     e.preventDefault();
     setLoading(true);
-    const body = { ...login };
-    delete body.repeatPassword;
+    const data = { ...login };
+    delete data.repeatPassword;
     axios
-      .post(URL, body)
+      .post(URL, data)
       .then(({ data, status }) => {
         console.log({ data, status });
         navigate('/');
@@ -148,7 +148,13 @@ const InputWrap = styled(InputGroup)`
 `;
 
 const StyledLink = styled(Link)`
+  cursor: pointer;
   color: ${({ theme }) => theme.colors.secondary};
   margin-top: 2rem;
   font-family: ${({ theme }) => theme.fonts.body};
+  font-weight: 700;
+
+  :hover {
+    text-decoration: underline;
+  }
 `;

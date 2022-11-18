@@ -2,11 +2,11 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-import EditTransaction from './pages/editTransaction';
+import EditRecord from './pages/editRecord';
 import Login from './pages/login';
-import NewTransaction from './pages/newTransaction';
-import Registration from './pages/registration';
-import Transactions from './pages/transactions';
+import NewRecord from './pages/newRecord';
+import UserRegistration from './pages/userRegistration';
+import Records from './pages/records';
 import GlobalStyles from './styles/globalStyles';
 import Styles from './styles/Styles';
 
@@ -20,18 +20,18 @@ function App() {
         <ThemeProvider theme={Styles}>
           <Routes>
             <Route path='/' element={<Login setToken={setToken} />} exact />
-            <Route path='/register' element={<Registration token={token} />} />
             <Route
-              path='/transactions'
-              element={<Transactions token={token} setToken={setToken} />}
+              path='/register'
+              element={<UserRegistration token={token} />}
             />
             <Route
-              path='/transaction/:way'
-              element={<NewTransaction token={token} />}
+              path='/records'
+              element={<Records token={token} setToken={setToken} />}
             />
+            <Route path='/record/:way' element={<NewRecord token={token} />} />
             <Route
-              path='/transaction/:id'
-              element={<EditTransaction token={token} />}
+              path='/record/edit/:id'
+              element={<EditRecord token={token} />}
             />
           </Routes>
         </ThemeProvider>

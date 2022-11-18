@@ -1,4 +1,4 @@
-import { Icon } from '@chakra-ui/icons';
+import { Icon, ChevronLeftIcon } from '@chakra-ui/icons';
 import { Input, InputGroup, InputLeftElement, Stack } from '@chakra-ui/react';
 import axios from 'axios';
 import { useState } from 'react';
@@ -6,11 +6,11 @@ import Div100vh from 'react-div-100vh';
 import { BsFillCalendarFill } from 'react-icons/bs';
 import { GoTextSize } from 'react-icons/go';
 import { SiCashapp } from 'react-icons/si';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from '../components/mainButton';
 
-export default function newTransaction({ token }) {
+export default function NewRecord({ token }) {
   const { way } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -22,22 +22,20 @@ export default function newTransaction({ token }) {
   const handleSubmission = (e) => {
     e.preventDefault();
     setLoading(true);
-    const URL = `${process.env.REACT_APP_BASE_URL}/transaction/${way}`;
+    const URL = `${process.env.REACT_APP_BASE_URL}/record/${way}`;
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-    const body = { ...newData, way };
     axios
-      .post(URL, body, config)
-      .then(({ data, status }) => {
-        console.log({ data, status });
-        navigate('/transactions');
+      .post(URL, { ...newData, way }, config)
+      .then(() => {
+        navigate('/records');
       })
       .catch(({ response: { data, status } }) => {
         console.log({ data, status });
-        navigate('/transactions');
+        navigate('/records');
       });
   };
   const handleForm = (e) => {
@@ -46,7 +44,10 @@ export default function newTransaction({ token }) {
   return (
     <Page>
       <Header>
-        <Title>New cash {way === 'in' ? 'inflow' : 'outflow'}</Title>
+        <Link to='/records'>
+          <ChevronLeftIcon color='secondary' w={7} h={7} />
+        </Link>
+        <Title>new {way === 'in' ? 'inflow' : 'outflow'}</Title>
       </Header>
       <Form onSubmit={handleSubmission}>
         <AllInputs spacing={0}>
@@ -78,6 +79,7 @@ export default function newTransaction({ token }) {
               focusBorderColor='main'
               variant='flushed'
               placeholder='value'
+              type='number'
             />
           </InputWrap>
           <InputWrap size='lg'>
@@ -97,7 +99,7 @@ export default function newTransaction({ token }) {
             />
           </InputWrap>
         </AllInputs>
-        <MainButton>Save cash {way === 'in' ? 'inflow' : 'outflow'}</MainButton>
+        <MainButton>Save record</MainButton>
       </Form>
     </Page>
   );
@@ -115,6 +117,7 @@ const Header = styled.header`
   width: 100%;
   height: 5.5rem;
   display: flex;
+  justify-content: space-between;
   align-items: center;
 `;
 const Title = styled.div`
