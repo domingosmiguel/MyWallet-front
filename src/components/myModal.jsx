@@ -9,14 +9,17 @@ import {
   Button,
 } from '@chakra-ui/react';
 
-export default function MyModal(
+export default function MyModal({
   modalTxt,
   isOpen,
-  onOpen,
   onClose,
   callback,
-  btnTxt
-) {
+  btnTxt,
+}) {
+  function handleClick() {
+    onClose();
+    callback();
+  }
   return (
     <Modal onClose={onClose} size='sm' isOpen={isOpen}>
       <ModalOverlay />
@@ -27,7 +30,7 @@ export default function MyModal(
         <ModalFooter>
           <Button onClick={onClose}>Close</Button>
           {callback && (
-            <Button variant='ghost' onClick={callback}>
+            <Button variant='ghost' onClick={handleClick}>
               {btnTxt}
             </Button>
           )}

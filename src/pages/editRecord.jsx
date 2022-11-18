@@ -20,7 +20,11 @@ export default function EditRecord({ token }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [editData, setEditData] = useState(null);
+  const [editData, setEditData] = useState({
+    date: '',
+    value: '',
+    description: '',
+  });
 
   useEffect(() => {
     const URL = `${process.env.REACT_APP_BASE_URL}/record/edit/${id}`;
@@ -86,7 +90,7 @@ export default function EditRecord({ token }) {
             <Input
               name='date'
               onChange={handleForm}
-              value={editData?.date}
+              value={editData.date}
               pr='0.5rem'
               focusBorderColor='main'
               variant='flushed'
@@ -102,7 +106,7 @@ export default function EditRecord({ token }) {
             <Input
               name='value'
               onChange={handleForm}
-              value={editData?.value || 'loading...'}
+              value={editData.value}
               focusBorderColor='main'
               variant='flushed'
               placeholder='value'
@@ -117,7 +121,7 @@ export default function EditRecord({ token }) {
             <Input
               name='description'
               onChange={handleForm}
-              value={editData?.description || 'loading...'}
+              value={editData.description}
               pr='1rem'
               focusBorderColor='main'
               variant='flushed'

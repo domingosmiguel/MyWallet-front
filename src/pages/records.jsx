@@ -47,7 +47,7 @@ export default function Records({ token, setToken }) {
         console.log({ data, status });
         navigate('/');
       });
-  }, []);
+  }, [isOpen]);
   useEffect(() => {
     setBalance(
       records
@@ -102,6 +102,7 @@ export default function Records({ token, setToken }) {
             description={line.description}
             value={line.value}
             way={line.way}
+            openModal={onOpen}
             setIdToDelete={setIdToDelete}
           />
         ))}
@@ -174,16 +175,23 @@ export default function Records({ token, setToken }) {
           <Txt>New outflow</Txt>
         </StyledLink>
       </ButtonsContainer>
-      {MyModal(
-        isOpen,
-        onOpen,
-        onClose,
-        () => {
-          setLoading(true);
+      <MyModal
+        modalTxt='teste'
+        isOpen={isOpen}
+        onClose={onClose}
+        // callback={() => {
+        //   onClose();
+        //   <DeleteRecord
+        //     idToDelete={idToDelete}
+        //     token={token}
+        //     setLoading={setLoading}
+        //   />;
+        // }}
+        callback={() => {
           deleteRecord(idToDelete, token, setLoading);
-        },
-        'Delete'
-      )}
+        }}
+        btnTxt='Delete'
+      />
     </Page>
   );
 }

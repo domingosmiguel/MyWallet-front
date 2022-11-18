@@ -16,7 +16,7 @@ export default function TransactionLine({
       <ChildLeft>{date}</ChildLeft>
       <ChildCenter to={`/record/edit/${id}`}>{description}</ChildCenter>
       <ChildRight way={way}>{value}</ChildRight>
-      <SmallCloseIcon
+      <Close
         color='lightLetters'
         onClick={() => {
           openModal();
@@ -50,4 +50,7 @@ const ChildRight = styled.div`
   width: 6rem;
   display: flex;
   justify-content: end;
+`;
+const Close = styled(SmallCloseIcon)`
+  cursor: pointer;
 `;
