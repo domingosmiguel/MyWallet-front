@@ -60,6 +60,7 @@ export default function userRegistration() {
               focusBorderColor='main'
               variant='flushed'
               placeholder='name'
+              isRequired
             />
           </InputWrap>
           <InputWrap size='lg'>
@@ -73,7 +74,9 @@ export default function userRegistration() {
               value={login.email}
               focusBorderColor='main'
               variant='flushed'
+              type='email'
               placeholder='email'
+              isRequired
             />
           </InputWrap>
           <InputWrap size='lg'>
@@ -90,6 +93,7 @@ export default function userRegistration() {
               variant='flushed'
               type='password'
               placeholder='password'
+              isRequired
             />
           </InputWrap>
           <InputWrap size='lg'>
@@ -106,6 +110,7 @@ export default function userRegistration() {
               variant='flushed'
               type='password'
               placeholder='repeat password'
+              isRequired
             />
           </InputWrap>
         </AllInputs>

@@ -48,7 +48,9 @@ export default function Login({ setToken }) {
               value={login.email}
               focusBorderColor='main'
               variant='flushed'
+              // type='email'
               placeholder='email'
+              // isRequired
             />
           </InputWrap>
           <InputWrap size='lg'>
@@ -65,6 +67,7 @@ export default function Login({ setToken }) {
               variant='flushed'
               type='password'
               placeholder='password'
+              isRequired
             />
           </InputWrap>
         </AllInputs>

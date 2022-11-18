@@ -176,17 +176,10 @@ export default function Records({ token, setToken }) {
         </StyledLink>
       </ButtonsContainer>
       <MyModal
-        modalTxt='teste'
+        modalHeader='Deletion confirm'
+        modalTxt='this action can not be undone, do you want to continue?'
         isOpen={isOpen}
         onClose={onClose}
-        // callback={() => {
-        //   onClose();
-        //   <DeleteRecord
-        //     idToDelete={idToDelete}
-        //     token={token}
-        //     setLoading={setLoading}
-        //   />;
-        // }}
         callback={() => {
           deleteRecord(idToDelete, token, setLoading);
         }}
@@ -265,7 +258,7 @@ const Empty = styled.div`
   margin: auto;
   color: ${({ theme }) => theme.colors.grayLetters};
   font-size: 1.25rem;
-  line-height: 1.45;
+  line-height: 1.45rem;
 `;
 const Balance = styled.p`
   font-weight: 400;

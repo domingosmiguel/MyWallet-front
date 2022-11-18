@@ -8,8 +8,10 @@ import {
   ModalFooter,
   Button,
 } from '@chakra-ui/react';
+import styled from 'styled-components';
 
 export default function MyModal({
+  modalHeader,
   modalTxt,
   isOpen,
   onClose,
@@ -24,11 +26,11 @@ export default function MyModal({
     <Modal onClose={onClose} size='sm' isOpen={isOpen}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{modalTxt}</ModalHeader>
+        <ModalHeader>{modalHeader}</ModalHeader>
         <ModalCloseButton />
-        <ModalBody />
+        <ModalBody>{modalTxt}</ModalBody>
         <ModalFooter>
-          <Button onClick={onClose}>Close</Button>
+          <ThemeButton onClick={onClose}>Close</ThemeButton>
           {callback && (
             <Button variant='ghost' onClick={handleClick}>
               {btnTxt}
@@ -39,3 +41,14 @@ export default function MyModal({
     </Modal>
   );
 }
+const ThemeButton = styled(Button)`
+  color: ${({ theme }) => theme.colors.secondary};
+
+  // for higher css specificity
+  :nth-child(n) {
+    background-color: ${({ theme }) => theme.colors.main};
+    :hover {
+      background-color: ${({ theme }) => theme.colors.lightMain};
+    }
+  }
+`;

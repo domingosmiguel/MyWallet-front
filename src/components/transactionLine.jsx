@@ -16,7 +16,7 @@ export default function TransactionLine({
       <ChildLeft>{date}</ChildLeft>
       <ChildCenter to={`/record/edit/${id}`}>{description}</ChildCenter>
       <ChildRight way={way}>{value}</ChildRight>
-      <Close
+      <CloseButton
         color='lightLetters'
         onClick={() => {
           openModal();
@@ -51,6 +51,9 @@ const ChildRight = styled.div`
   display: flex;
   justify-content: end;
 `;
-const Close = styled(SmallCloseIcon)`
+const CloseButton = styled(SmallCloseIcon)`
   cursor: pointer;
+  & :nth-child(n) {
+    cursor: pointer;
+  }
 `;

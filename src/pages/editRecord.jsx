@@ -3,6 +3,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Select,
   Skeleton,
   Stack,
 } from '@chakra-ui/react';
@@ -10,6 +11,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
 import { BsFillCalendarFill } from 'react-icons/bs';
+import { TbArrowsUpDown } from 'react-icons/tb';
 import { GoTextSize } from 'react-icons/go';
 import { SiCashapp } from 'react-icons/si';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -24,6 +26,7 @@ export default function EditRecord({ token }) {
     date: '',
     value: '',
     description: '',
+    way: '',
   });
 
   useEffect(() => {
@@ -72,13 +75,7 @@ export default function EditRecord({ token }) {
         <Link to='/records'>
           <ChevronLeftIcon color='secondary' w={7} h={7} />
         </Link>
-        <Title>
-          {loading ? (
-            <Skeleton w={60} h={9} />
-          ) : (
-            `edit ${editData.way.toLowerCase() === 'in' ? 'inflow' : 'outflow'}`
-          )}
-        </Title>
+        <Title>{loading ? <Skeleton w={60} h={9} /> : 'Edit flow'}</Title>
       </Header>
       <Form onSubmit={handleSubmission}>
         <AllInputs spacing={0}>
@@ -96,6 +93,7 @@ export default function EditRecord({ token }) {
               variant='flushed'
               placeholder='date'
               type='date'
+              isRequired
             />
           </InputWrap>
           <InputWrap size='lg'>
@@ -111,6 +109,7 @@ export default function EditRecord({ token }) {
               variant='flushed'
               placeholder='value'
               type='number'
+              isRequired
             />
           </InputWrap>
           <InputWrap size='lg'>
@@ -127,7 +126,27 @@ export default function EditRecord({ token }) {
               variant='flushed'
               type='text'
               placeholder='description'
+              isRequired
             />
+          </InputWrap>
+          <InputWrap size='lg'>
+            <InputLeftElement
+              pointerEvents='none'
+              children={<Icon as={TbArrowsUpDown} color='gray.300' />}
+            />
+            <Select
+              name='way'
+              placeholder='Select option'
+              focusBorderColor='main'
+              variant='flushed'
+              pl='3rem'
+              onChange={handleForm}
+              value={editData.way}
+              isRequired
+            >
+              <option value='in'>inflow</option>
+              <option value='out'>outflow</option>
+            </Select>
           </InputWrap>
         </AllInputs>
         <MainButton>Update record</MainButton>

@@ -45,7 +45,7 @@ export default function NewRecord({ token }) {
     <Page>
       <Header>
         <Link to='/records'>
-          <ChevronLeftIcon color='secondary' w={7} h={7} />
+          <BackButton color='secondary' w={7} h={7} />
         </Link>
         <Title>new {way === 'in' ? 'inflow' : 'outflow'}</Title>
       </Header>
@@ -65,6 +65,7 @@ export default function NewRecord({ token }) {
               variant='flushed'
               type='date'
               placeholder='date'
+              isRequired
             />
           </InputWrap>
           <InputWrap size='lg'>
@@ -80,6 +81,7 @@ export default function NewRecord({ token }) {
               variant='flushed'
               placeholder='value'
               type='number'
+              isRequired
             />
           </InputWrap>
           <InputWrap size='lg'>
@@ -96,6 +98,7 @@ export default function NewRecord({ token }) {
               variant='flushed'
               type='text'
               placeholder='description'
+              isRequired
             />
           </InputWrap>
         </AllInputs>
@@ -119,6 +122,12 @@ const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+const BackButton = styled(ChevronLeftIcon)`
+  cursor: pointer;
+  & :nth-child(n) {
+    cursor: pointer;
+  }
 `;
 const Title = styled.div`
   color: ${({ theme }) => theme.colors.secondary};
