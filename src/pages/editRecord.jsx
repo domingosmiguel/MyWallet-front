@@ -75,7 +75,7 @@ export default function EditRecord({ token }) {
         <Link to='/records'>
           <ChevronLeftIcon color='secondary' w={7} h={7} />
         </Link>
-        <Title>{loading ? <Skeleton w={60} h={9} /> : 'Edit flow'}</Title>
+        <Title>{loading ? <Skeleton w={60} h={9} /> : 'edit cash flow'}</Title>
       </Header>
       <Form onSubmit={handleSubmission}>
         <AllInputs spacing={0}>
@@ -93,6 +93,7 @@ export default function EditRecord({ token }) {
               variant='flushed'
               placeholder='date'
               type='date'
+              disabled={loading}
               isRequired
             />
           </InputWrap>
@@ -109,6 +110,7 @@ export default function EditRecord({ token }) {
               variant='flushed'
               placeholder='value'
               type='number'
+              disabled={loading}
               isRequired
             />
           </InputWrap>
@@ -126,6 +128,7 @@ export default function EditRecord({ token }) {
               variant='flushed'
               type='text'
               placeholder='description'
+              disabled={loading}
               isRequired
             />
           </InputWrap>
@@ -142,6 +145,7 @@ export default function EditRecord({ token }) {
               pl='3rem'
               onChange={handleForm}
               value={editData.way}
+              disabled={loading}
               isRequired
             >
               <option value='in'>inflow</option>
@@ -149,7 +153,7 @@ export default function EditRecord({ token }) {
             </Select>
           </InputWrap>
         </AllInputs>
-        <MainButton>Update record</MainButton>
+        <MainButton isLoading={loading}>Update record</MainButton>
       </Form>
     </Page>
   );

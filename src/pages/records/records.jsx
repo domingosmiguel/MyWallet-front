@@ -15,10 +15,10 @@ import { RiLogoutBoxRLine } from 'react-icons/ri';
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import TransactionLine from '../components/transactionLine';
-import MyModal from '../components/myModal';
-import deleteRecord from '../functions/deleteRecord';
-import firstLetterToUpperCase from '../functions/firstLetterToUpperCase';
+import TransactionLine from './transactionLine';
+import MyModal from '../../components/myModal';
+import deleteRecord from '../../functions/deleteRecord';
+import firstLetterToUpperCase from '../../functions/firstLetterToUpperCase';
 
 export default function Records({ token, setToken }) {
   const navigate = useNavigate();
@@ -136,7 +136,10 @@ export default function Records({ token, setToken }) {
             display='flex'
             justify='space-between'
           >
-            Balance<Balance positive={balance >= 0}>{balance}</Balance>
+            Balance
+            <Balance positive={balance >= 0}>
+              {balance.replace('-', '')}
+            </Balance>
           </CardFooter>
         </>
       );
@@ -177,7 +180,7 @@ export default function Records({ token, setToken }) {
       </ButtonsContainer>
       <MyModal
         modalHeader='Deletion confirm'
-        modalTxt='this action can not be undone, do you want to continue?'
+        modalTxt='This action can not be undone, do you want to continue?'
         isOpen={isOpen}
         onClose={onClose}
         callback={() => {

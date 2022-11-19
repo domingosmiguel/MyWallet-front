@@ -10,14 +10,16 @@ import axios from 'axios';
 import { useState } from 'react';
 import Div100vh from 'react-div-100vh';
 import { BsFillPersonFill } from 'react-icons/bs';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from '../components/mainButton';
+import MainLink from '../components/mainLink';
+import useForm from '../hooks/useForm';
 
 export default function userRegistration() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [login, setLogin] = useState({
+  const [login, updateLogin] = useForm({
     name: '',
     email: '',
     password: '',
@@ -40,9 +42,6 @@ export default function userRegistration() {
         setLoading(false);
       });
   };
-  const handleForm = (e) => {
-    setLogin({ ...login, [e.target.name]: e.target.value });
-  };
   return (
     <Page>
       <Logo>MyWallet</Logo>
@@ -55,11 +54,12 @@ export default function userRegistration() {
             />
             <Input
               name='name'
-              onChange={handleForm}
+              onChange={updateLogin}
               value={login.name}
               focusBorderColor='main'
               variant='flushed'
               placeholder='name'
+              disabled={loading}
               isRequired
             />
           </InputWrap>
@@ -70,12 +70,13 @@ export default function userRegistration() {
             />
             <Input
               name='email'
-              onChange={handleForm}
+              onChange={updateLogin}
               value={login.email}
               focusBorderColor='main'
               variant='flushed'
               type='email'
               placeholder='email'
+              disabled={loading}
               isRequired
             />
           </InputWrap>
@@ -86,13 +87,14 @@ export default function userRegistration() {
             />
             <Input
               name='password'
-              onChange={handleForm}
+              onChange={updateLogin}
               value={login.password}
               pr='1rem'
               focusBorderColor='main'
               variant='flushed'
               type='password'
               placeholder='password'
+              disabled={loading}
               isRequired
             />
           </InputWrap>
@@ -103,20 +105,23 @@ export default function userRegistration() {
             />
             <Input
               name='repeatPassword'
-              onChange={handleForm}
+              onChange={updateLogin}
               value={login.repeatPassword}
               pr='1rem'
               focusBorderColor='main'
               variant='flushed'
               type='password'
               placeholder='repeat password'
+              disabled={loading}
               isRequired
             />
           </InputWrap>
         </AllInputs>
-        <MainButton>Register</MainButton>
+        <MainButton isLoading={loading}>Register</MainButton>
       </Form>
-      <StyledLink to='/'>Already have a account? Sign-in!</StyledLink>
+      <MainLink to='/' disabled={loading}>
+        Already have a account? Sign-in!
+      </MainLink>
     </Page>
   );
 }
@@ -150,16 +155,4 @@ const InputWrap = styled(InputGroup)`
   border: 0 none;
   outline: 0;
   font-family: ${({ theme }) => theme.fonts.body};
-`;
-
-const StyledLink = styled(Link)`
-  cursor: pointer;
-  color: ${({ theme }) => theme.colors.secondary};
-  margin-top: 2rem;
-  font-family: ${({ theme }) => theme.fonts.body};
-  font-weight: 700;
-
-  :hover {
-    text-decoration: underline;
-  }
 `;

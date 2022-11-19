@@ -6,7 +6,7 @@ import EditRecord from './pages/editRecord';
 import Login from './pages/login';
 import NewRecord from './pages/newRecord';
 import UserRegistration from './pages/userRegistration';
-import Records from './pages/records';
+import Records from './pages/records/records';
 import GlobalStyles from './styles/globalStyles';
 import Styles from './styles/Styles';
 

@@ -1,10 +1,20 @@
-import React from 'react';
 import styled from 'styled-components';
+import { Spinner } from '@chakra-ui/react';
 
 export default function MainButton({ children, isLoading, onClick }) {
   return (
-    <StyledButton onClick={onClick}>
-      {isLoading ? 'carregando...' : children}
+    <StyledButton onClick={onClick} disabled={isLoading}>
+      {isLoading ? (
+        <Spinner
+          thickness='4px'
+          speed='0.65s'
+          emptyColor='secondary'
+          color='main'
+          size='lg'
+        />
+      ) : (
+        children
+      )}
     </StyledButton>
   );
 }
@@ -21,4 +31,12 @@ const StyledButton = styled.button`
   border-radius: 0.5rem;
   font-size: 1.25rem;
   font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  :disabled {
+    pointer-events: none;
+    opacity: 0.85;
+  }
 `;

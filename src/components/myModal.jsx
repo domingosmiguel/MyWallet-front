@@ -23,7 +23,7 @@ export default function MyModal({
     callback();
   }
   return (
-    <Modal onClose={onClose} size='sm' isOpen={isOpen}>
+    <Modal onClose={onClose} size='sm' isOpen={isOpen} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{modalHeader}</ModalHeader>

@@ -65,6 +65,7 @@ export default function NewRecord({ token }) {
               variant='flushed'
               type='date'
               placeholder='date'
+              disabled={loading}
               isRequired
             />
           </InputWrap>
@@ -81,6 +82,7 @@ export default function NewRecord({ token }) {
               variant='flushed'
               placeholder='value'
               type='number'
+              disabled={loading}
               isRequired
             />
           </InputWrap>
@@ -98,11 +100,12 @@ export default function NewRecord({ token }) {
               variant='flushed'
               type='text'
               placeholder='description'
+              disabled={loading}
               isRequired
             />
           </InputWrap>
         </AllInputs>
-        <MainButton>Save record</MainButton>
+        <MainButton isLoading={loading}>Save record</MainButton>
       </Form>
     </Page>
   );

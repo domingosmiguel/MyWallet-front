@@ -6,6 +6,7 @@ import Div100vh from 'react-div-100vh';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from '../components/mainButton';
+import MainLink from '../components/mainLink';
 
 export default function Login({ setToken }) {
   const navigate = useNavigate();
@@ -50,7 +51,8 @@ export default function Login({ setToken }) {
               variant='flushed'
               // type='email'
               placeholder='email'
-              // isRequired
+              disabled={loading}
+              isRequired
             />
           </InputWrap>
           <InputWrap size='lg'>
@@ -67,13 +69,16 @@ export default function Login({ setToken }) {
               variant='flushed'
               type='password'
               placeholder='password'
+              disabled={loading}
               isRequired
             />
           </InputWrap>
         </AllInputs>
-        <MainButton>Login</MainButton>
+        <MainButton isLoading={loading}>Login</MainButton>
       </Form>
-      <StyledLink to='/register'>First time here? Sign-up!</StyledLink>
+      <MainLink to='/register' disabled={loading}>
+        First time here? Sign-up!
+      </MainLink>
     </Page>
   );
 }
@@ -107,16 +112,4 @@ const InputWrap = styled(InputGroup)`
   border: 0 none;
   outline: 0;
   font-family: ${({ theme }) => theme.fonts.body};
-`;
-
-const StyledLink = styled(Link)`
-  cursor: pointer;
-  color: ${({ theme }) => theme.colors.secondary};
-  margin-top: 2rem;
-  font-family: ${({ theme }) => theme.fonts.body};
-  font-weight: 700;
-
-  :hover {
-    text-decoration: underline;
-  }
 `;
