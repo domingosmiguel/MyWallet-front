@@ -1,7 +1,6 @@
 import { Icon, ChevronLeftIcon } from '@chakra-ui/icons';
 import { Input, InputGroup, InputLeftElement, Stack } from '@chakra-ui/react';
-import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
 import { BsFillCalendarFill } from 'react-icons/bs';
 import { GoTextSize } from 'react-icons/go';
@@ -9,37 +8,38 @@ import { SiCashapp } from 'react-icons/si';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from '../components/mainButton';
+import useForm from '../hooks/useForm';
+import useAxiosRequest from '../hooks/useAxiosRequest';
 
 export default function NewRecord({ token }) {
   const { way } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [newData, setNewData] = useState({
+  const [newData, updateForm] = useForm({
     date: '',
     value: '',
     description: '',
   });
+
+  const [[data, error, loaded], runAxios] = useAxiosRequest(
+    false,
+    `/record/${way}`,
+    'post',
+    { ...newData, way },
+    {
+      Authorization: `Bearer ${token}`,
+    }
+  );
+  useEffect(() => {
+    if (loaded) {
+      navigate('/records');
+      if (error) console.log(error);
+    }
+  }, [data, error]);
   const handleSubmission = (e) => {
     e.preventDefault();
     setLoading(true);
-    const URL = `${process.env.REACT_APP_BASE_URL}/record/${way}`;
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    axios
-      .post(URL, { ...newData, way }, config)
-      .then(() => {
-        navigate('/records');
-      })
-      .catch(({ response: { data, status } }) => {
-        console.log({ data, status });
-        navigate('/records');
-      });
-  };
-  const handleForm = (e) => {
-    setNewData({ ...newData, [e.target.name]: e.target.value });
+    runAxios(Date.now());
   };
   return (
     <Page>
@@ -58,7 +58,7 @@ export default function NewRecord({ token }) {
             />
             <Input
               name='date'
-              onChange={handleForm}
+              onChange={updateForm}
               value={newData.date}
               pr='0.5rem'
               focusBorderColor='main'
@@ -76,7 +76,7 @@ export default function NewRecord({ token }) {
             />
             <Input
               name='value'
-              onChange={handleForm}
+              onChange={updateForm}
               value={newData.value}
               focusBorderColor='main'
               variant='flushed'
@@ -93,7 +93,7 @@ export default function NewRecord({ token }) {
             />
             <Input
               name='description'
-              onChange={handleForm}
+              onChange={updateForm}
               value={newData.description}
               pr='1rem'
               focusBorderColor='main'

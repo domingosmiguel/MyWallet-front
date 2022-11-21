@@ -6,8 +6,7 @@ import {
   InputLeftElement,
   Stack,
 } from '@chakra-ui/react';
-import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
@@ -15,32 +14,40 @@ import styled from 'styled-components';
 import MainButton from '../components/mainButton';
 import MainLink from '../components/mainLink';
 import useForm from '../hooks/useForm';
+import useAxiosRequest from '../hooks/useAxiosRequest';
 
 export default function userRegistration() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [login, updateLogin] = useForm({
+  const [login, updateForm] = useForm({
     name: '',
     email: '',
     password: '',
     repeatPassword: '',
   });
+  const [[response, error, loaded], runAxios] = useAxiosRequest(
+    false,
+    '/sign-up',
+    'post',
+    login
+  );
+  useEffect(() => {
+    if (response && loaded) {
+      console.log({
+        [response.data]: response.data,
+        [response.status]: response.status,
+      });
+      navigate('/');
+    } else if (loaded) {
+      console.log(error);
+      setLoading(false);
+    }
+  }, [response, error]);
+
   const handleSubmission = (e) => {
-    const URL = `${process.env.REACT_APP_BASE_URL}/sign-up`;
     e.preventDefault();
     setLoading(true);
-    const data = { ...login };
-    delete data.repeatPassword;
-    axios
-      .post(URL, data)
-      .then(({ data, status }) => {
-        console.log({ data, status });
-        navigate('/');
-      })
-      .catch(({ response: { data, status } }) => {
-        console.log({ data, status });
-        setLoading(false);
-      });
+    runAxios(Date.now());
   };
   return (
     <Page>
@@ -54,7 +61,7 @@ export default function userRegistration() {
             />
             <Input
               name='name'
-              onChange={updateLogin}
+              onChange={updateForm}
               value={login.name}
               focusBorderColor='main'
               variant='flushed'
@@ -70,7 +77,7 @@ export default function userRegistration() {
             />
             <Input
               name='email'
-              onChange={updateLogin}
+              onChange={updateForm}
               value={login.email}
               focusBorderColor='main'
               variant='flushed'
@@ -87,7 +94,7 @@ export default function userRegistration() {
             />
             <Input
               name='password'
-              onChange={updateLogin}
+              onChange={updateForm}
               value={login.password}
               pr='1rem'
               focusBorderColor='main'
@@ -105,7 +112,7 @@ export default function userRegistration() {
             />
             <Input
               name='repeatPassword'
-              onChange={updateLogin}
+              onChange={updateForm}
               value={login.repeatPassword}
               pr='1rem'
               focusBorderColor='main'

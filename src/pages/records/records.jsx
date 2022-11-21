@@ -8,7 +8,6 @@ import {
   StackDivider,
   useDisclosure,
 } from '@chakra-ui/react';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
@@ -17,8 +16,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import TransactionLine from './transactionLine';
 import MyModal from '../../components/myModal';
-import deleteRecord from '../../functions/deleteRecord';
 import firstLetterToUpperCase from '../../functions/firstLetterToUpperCase';
+import useAxiosRequest from '../../hooks/useAxiosRequest';
+import useDeleteData from '../../hooks/useDeleteData';
+import useFirstRender from '../../hooks/useFirstRender';
 
 export default function Records({ token, setToken }) {
   const navigate = useNavigate();
@@ -26,28 +27,34 @@ export default function Records({ token, setToken }) {
   const [records, setRecords] = useState([]);
   const [user, setUser] = useState(null);
   const [balance, setBalance] = useState(0);
-  const [idToDelete, setIdToDelete] = useState();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const firstRender = useFirstRender();
+  const [deleteRecord, setIdToDelete, deleted] = useDeleteData(
+    token,
+    setLoading
+  );
+
+  const [[response, error, loaded], runAxios] = useAxiosRequest(
+    true,
+    '/records',
+    'get',
+    '',
+    {
+      Authorization: `Bearer ${token}`,
+    }
+  );
   useEffect(() => {
-    const URL = `${process.env.REACT_APP_BASE_URL}/records`;
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    axios
-      .get(URL, config)
-      .then(({ data }) => {
-        setRecords(data.userRecords);
-        setUser(data.user);
-        setLoading(false);
-      })
-      .catch(({ response: { data, status } }) => {
-        console.log({ data, status });
-        navigate('/');
-      });
-  }, [isOpen]);
+    if (response && loaded) {
+      setRecords(response.data.userRecords);
+      setUser(response.data.user);
+      setLoading(false);
+    } else if (loaded) {
+      console.log(error);
+      navigate('/');
+    }
+  }, [response, error]);
   useEffect(() => {
     setBalance(
       records
@@ -61,6 +68,11 @@ export default function Records({ token, setToken }) {
     );
   }, [records]);
 
+  useEffect(() => {
+    if (!firstRender()) {
+      runAxios(Date.now());
+    }
+  }, [deleted]);
   const handleLogout = () => {
     setToken('');
     navigate('/');
@@ -179,14 +191,10 @@ export default function Records({ token, setToken }) {
         </StyledLink>
       </ButtonsContainer>
       <MyModal
-        modalHeader='Deletion confirm'
-        modalTxt='This action can not be undone, do you want to continue?'
         isOpen={isOpen}
         onClose={onClose}
-        callback={() => {
-          deleteRecord(idToDelete, token, setLoading);
-        }}
-        btnTxt='Delete'
+        setLoading={setLoading}
+        deleteRecord={deleteRecord}
       />
     </Page>
   );

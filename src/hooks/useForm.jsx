@@ -7,5 +7,5 @@ export default function useForm(initialValue) {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  return [form, updateForm];
+  return [form, updateForm, setForm];
 }

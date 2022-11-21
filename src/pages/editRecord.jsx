@@ -7,7 +7,6 @@ import {
   Skeleton,
   Stack,
 } from '@chakra-ui/react';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
 import { BsFillCalendarFill } from 'react-icons/bs';
@@ -17,57 +16,57 @@ import { SiCashapp } from 'react-icons/si';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from '../components/mainButton';
+import useForm from '../hooks/useForm';
+import useAxiosRequest from '../hooks/useAxiosRequest';
 
 export default function EditRecord({ token }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [editData, setEditData] = useState({
+  const [editData, updateForm, setForm] = useForm({
     date: '',
     value: '',
     description: '',
     way: '',
   });
-
+  const [[dataGet, errorGet, loadedGet]] = useAxiosRequest(
+    true,
+    `/record/edit/${id}`,
+    'get',
+    '',
+    {
+      Authorization: `Bearer ${token}`,
+    }
+  );
   useEffect(() => {
-    const URL = `${process.env.REACT_APP_BASE_URL}/record/edit/${id}`;
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    axios
-      .get(URL, config)
-      .then(({ data }) => {
-        setEditData(data);
-        setLoading(false);
-      })
-      .catch(({ response: { data, status } }) => {
-        console.log({ data, status });
-        navigate('/');
-      });
-  }, []);
+    if (dataGet && loadedGet) {
+      setForm(dataGet.data);
+      setLoading(false);
+    } else if (loadedGet) {
+      console.log(errorGet);
+      navigate('/');
+    }
+  }, [dataGet, errorGet]);
+
+  const [[dataPut, errorPut, loadedPut], setRunAxiosPut] = useAxiosRequest(
+    false,
+    `/record/edit/${id}`,
+    'put',
+    editData,
+    {
+      Authorization: `Bearer ${token}`,
+    }
+  );
+  useEffect(() => {
+    if (loadedPut) {
+      navigate('/records');
+      if (errorPut) console.log(errorPut);
+    }
+  }, [dataPut, errorPut]);
   const handleSubmission = (e) => {
     e.preventDefault();
     setLoading(true);
-    const URL = `${process.env.REACT_APP_BASE_URL}/record/edit/${id}`;
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    axios
-      .put(URL, editData, config)
-      .then(() => {
-        navigate('/records');
-      })
-      .catch(({ response: { data, status } }) => {
-        console.log({ data, status });
-        navigate('/records');
-      });
-  };
-  const handleForm = (e) => {
-    setEditData({ ...editData, [e.target.name]: e.target.value });
+    setRunAxiosPut(Date.now());
   };
   return (
     <Page>
@@ -75,7 +74,7 @@ export default function EditRecord({ token }) {
         <Link to='/records'>
           <ChevronLeftIcon color='secondary' w={7} h={7} />
         </Link>
-        <Title>{loading ? <Skeleton w={60} h={9} /> : 'edit cash flow'}</Title>
+        <Title>edit cash flow</Title>
       </Header>
       <Form onSubmit={handleSubmission}>
         <AllInputs spacing={0}>
@@ -86,7 +85,7 @@ export default function EditRecord({ token }) {
             />
             <Input
               name='date'
-              onChange={handleForm}
+              onChange={updateForm}
               value={editData.date}
               pr='0.5rem'
               focusBorderColor='main'
@@ -104,7 +103,7 @@ export default function EditRecord({ token }) {
             />
             <Input
               name='value'
-              onChange={handleForm}
+              onChange={updateForm}
               value={editData.value}
               focusBorderColor='main'
               variant='flushed'
@@ -121,7 +120,7 @@ export default function EditRecord({ token }) {
             />
             <Input
               name='description'
-              onChange={handleForm}
+              onChange={updateForm}
               value={editData.description}
               pr='1rem'
               focusBorderColor='main'
@@ -143,7 +142,7 @@ export default function EditRecord({ token }) {
               focusBorderColor='main'
               variant='flushed'
               pl='3rem'
-              onChange={handleForm}
+              onChange={updateForm}
               value={editData.way}
               disabled={loading}
               isRequired

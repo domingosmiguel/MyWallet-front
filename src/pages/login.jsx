@@ -1,37 +1,41 @@
 import { EmailIcon, LockIcon } from '@chakra-ui/icons';
 import { Input, InputGroup, InputLeftElement, Stack } from '@chakra-ui/react';
-import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from '../components/mainButton';
 import MainLink from '../components/mainLink';
+import useForm from '../hooks/useForm';
+import useAxiosRequest from '../hooks/useAxiosRequest';
 
 export default function Login({ setToken }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [login, setLogin] = useState({
+  const [login, updateForm] = useForm({
     email: '',
     password: '',
   });
+  const [[data, error, loaded], runAxios] = useAxiosRequest(
+    false,
+    '/sign-in',
+    'post',
+    login
+  );
+  useEffect(() => {
+    if (data && loaded) {
+      setToken(data.data);
+      navigate('/records');
+    } else if (loaded) {
+      console.log(error);
+      setLoading(false);
+    }
+  }, [data, error]);
+
   const handleSubmission = (e) => {
-    const URL = `${process.env.REACT_APP_BASE_URL}/sign-in`;
     e.preventDefault();
     setLoading(true);
-    axios
-      .post(URL, login)
-      .then((res) => {
-        setToken(res.data);
-        navigate('/records');
-      })
-      .catch(({ response: { data, status } }) => {
-        console.log({ data, status });
-        setLoading(false);
-      });
-  };
-  const handleForm = (e) => {
-    setLogin({ ...login, [e.target.name]: e.target.value });
+    runAxios(Date.now());
   };
   return (
     <Page>
@@ -45,7 +49,7 @@ export default function Login({ setToken }) {
             />
             <Input
               name='email'
-              onChange={handleForm}
+              onChange={updateForm}
               value={login.email}
               focusBorderColor='main'
               variant='flushed'
@@ -62,7 +66,7 @@ export default function Login({ setToken }) {
             />
             <Input
               name='password'
-              onChange={handleForm}
+              onChange={updateForm}
               value={login.password}
               pr='1rem'
               focusBorderColor='main'
