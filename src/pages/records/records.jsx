@@ -83,7 +83,7 @@ export default function Records({ token, setToken }) {
     return (
       <Stack
         divider={<StackDivider />}
-        spacing='2'
+        spacing='1'
         pos='absolute'
         left={3}
         right={3}
@@ -98,15 +98,16 @@ export default function Records({ token, setToken }) {
     return (
       <Stack
         divider={<StackDivider />}
-        spacing='2'
+        spacing='1'
         pos='absolute'
         left={3}
         right={3}
       >
-        {records.map((line) => (
+        {records.map((line, index) => (
           <TransactionLine
             key={line._id}
             id={line._id}
+            delay={index}
             date={line.date.split('-').reverse().slice(0, 2).join('/')}
             description={line.description}
             value={line.value}

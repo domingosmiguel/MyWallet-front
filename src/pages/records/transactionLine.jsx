@@ -1,9 +1,10 @@
 import { SmallCloseIcon } from '@chakra-ui/icons';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
 
 export default function TransactionLine({
   id,
+  delay,
   date,
   description,
   value,
@@ -12,7 +13,7 @@ export default function TransactionLine({
   setIdToDelete,
 }) {
   return (
-    <Father>
+    <Father delay={delay / 30}>
       <ChildLeft>{date}</ChildLeft>
       <ChildCenter to={`/record/edit/${id}`}>{description}</ChildCenter>
       <ChildRight way={way}>{value}</ChildRight>
@@ -27,10 +28,26 @@ export default function TransactionLine({
   );
 }
 
+const swingIn = keyframes`
+  0% {
+    transform: rotateX(-100deg);
+    transform-origin: top;
+    opacity: 0;
+  }
+  100% {
+    transform: rotateX(0deg);
+    transform-origin: top;
+    opacity: 1;
+  }
+`;
+
 const Father = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+
+  animation: ${swingIn} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+    ${({ delay }) => `${delay}s`} both;
 `;
 const ChildLeft = styled.div`
   color: ${({ theme }) => theme.colors.lightLetters};
