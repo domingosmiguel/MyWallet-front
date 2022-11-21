@@ -1,5 +1,5 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import EditRecord from './pages/editRecord';
@@ -11,7 +11,16 @@ import GlobalStyles from './styles/globalStyles';
 import Styles from './styles/Styles';
 
 function App() {
-  const [token, setToken] = useState('');
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const serializedToken = localStorage.getItem('token');
+    if (serializedToken !== null) {
+      const oldToken = JSON.parse(serializedToken);
+      setToken(oldToken);
+    }
+  }, []);
+
   const theme = extendTheme(Styles);
   return (
     <BrowserRouter>
@@ -19,7 +28,11 @@ function App() {
       <ChakraProvider theme={theme}>
         <ThemeProvider theme={Styles}>
           <Routes>
-            <Route path='/' element={<Login setToken={setToken} />} exact />
+            <Route
+              path='/'
+              element={<Login token={token} setToken={setToken} />}
+              exact
+            />
             <Route
               path='/register'
               element={<UserRegistration token={token} />}

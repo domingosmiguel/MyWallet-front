@@ -10,32 +10,26 @@ import {
 } from '@chakra-ui/react';
 import styled from 'styled-components';
 
-export default function MyModal({
-  modalHeader,
-  modalTxt,
-  isOpen,
-  onClose,
-  callback,
-  btnTxt,
-}) {
+export default function MyModal({ isOpen, onClose, setLoading, deleteRecord }) {
   function handleClick() {
+    setLoading(true);
+    deleteRecord(Date.now());
     onClose();
-    callback();
   }
   return (
     <Modal onClose={onClose} size='sm' isOpen={isOpen} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{modalHeader}</ModalHeader>
+        <ModalHeader>Deletion confirm</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>{modalTxt}</ModalBody>
+        <ModalBody>
+          This action can not be undone, do you want to continue?
+        </ModalBody>
         <ModalFooter>
           <ThemeButton onClick={onClose}>Close</ThemeButton>
-          {callback && (
-            <Button variant='ghost' onClick={handleClick}>
-              {btnTxt}
-            </Button>
-          )}
+          <Button variant='ghost' onClick={handleClick}>
+            Delete
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

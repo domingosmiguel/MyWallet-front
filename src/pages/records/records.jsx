@@ -12,17 +12,17 @@ import { useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import TransactionLine from './transactionLine';
 import MyModal from '../../components/myModal';
 import firstLetterToUpperCase from '../../functions/firstLetterToUpperCase';
+import useLogout from '../../hooks/useLogout';
 import useAxiosRequest from '../../hooks/useAxiosRequest';
 import useDeleteData from '../../hooks/useDeleteData';
 import useFirstRender from '../../hooks/useFirstRender';
 
 export default function Records({ token, setToken }) {
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [records, setRecords] = useState([]);
   const [user, setUser] = useState(null);
@@ -30,6 +30,7 @@ export default function Records({ token, setToken }) {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const logout = useLogout(setToken);
   const firstRender = useFirstRender();
   const [deleteRecord, setIdToDelete, deleted] = useDeleteData(
     token,
@@ -52,7 +53,7 @@ export default function Records({ token, setToken }) {
       setLoading(false);
     } else if (loaded) {
       console.log(error);
-      navigate('/');
+      logout(Date.now());
     }
   }, [response, error]);
   useEffect(() => {
@@ -73,10 +74,6 @@ export default function Records({ token, setToken }) {
       runAxios(Date.now());
     }
   }, [deleted]);
-  const handleLogout = () => {
-    setToken('');
-    navigate('/');
-  };
 
   function skeletons(n) {
     const skeletonsNumber = [];
@@ -168,7 +165,12 @@ export default function Records({ token, setToken }) {
             `Hi, ${firstLetterToUpperCase(user.name)}`
           )}
         </Title>
-        <LogoutButton as={RiLogoutBoxRLine} onClick={handleLogout} />
+        <LogoutButton
+          as={RiLogoutBoxRLine}
+          onClick={() => {
+            logout(Date.now());
+          }}
+        />
       </Header>
       <Card
         color='letters'

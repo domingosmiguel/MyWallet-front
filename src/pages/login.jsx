@@ -9,7 +9,7 @@ import MainLink from '../components/mainLink';
 import useForm from '../hooks/useForm';
 import useAxiosRequest from '../hooks/useAxiosRequest';
 
-export default function Login({ setToken }) {
+export default function Login({ token, setToken }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [login, updateForm] = useForm({
@@ -23,8 +23,15 @@ export default function Login({ setToken }) {
     login
   );
   useEffect(() => {
+    if (token !== null) {
+      navigate('/records');
+    }
+  });
+  useEffect(() => {
     if (data && loaded) {
       setToken(data.data);
+      const serializedToken = JSON.stringify(data.data);
+      localStorage.setItem('token', serializedToken);
       navigate('/records');
     } else if (loaded) {
       console.log(error);
@@ -53,7 +60,7 @@ export default function Login({ setToken }) {
               value={login.email}
               focusBorderColor='main'
               variant='flushed'
-              // type='email'
+//              type='email'
               placeholder='email'
               disabled={loading}
               isRequired
