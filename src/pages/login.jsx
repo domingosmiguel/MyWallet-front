@@ -60,7 +60,7 @@ export default function Login({ token, setToken }) {
               value={login.email}
               focusBorderColor='main'
               variant='flushed'
-//              type='email'
+              type='email'
               placeholder='email'
               disabled={loading}
               isRequired

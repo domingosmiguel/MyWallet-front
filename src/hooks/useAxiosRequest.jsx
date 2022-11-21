@@ -20,7 +20,7 @@ export default function useAxiosRequest(
   const baseURL = process.env.REACT_APP_BASE_URL;
 
   useEffect(() => {
-    if (runOnFirstRender || runOnFirstRender === firstRender()) {
+    if (runOnFirstRender || !firstRender()) {
       (async () => {
         try {
           const response = await axios.request({
