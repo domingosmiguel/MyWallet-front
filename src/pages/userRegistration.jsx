@@ -16,7 +16,7 @@ import MainLink from '../components/mainLink';
 import useForm from '../hooks/useForm';
 import useAxiosRequest from '../hooks/useAxiosRequest';
 
-export default function userRegistration() {
+export default function UserRegistration() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [login, updateForm] = useForm({
