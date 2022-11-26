@@ -1,6 +1,6 @@
 import { SmallCloseIcon } from '@chakra-ui/icons';
-import styled, { keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
+import styled, { keyframes } from 'styled-components';
 
 export default function TransactionLine({
   id,
@@ -40,7 +40,6 @@ const swingIn = keyframes`
     opacity: 1;
   }
 `;
-
 const Father = styled.div`
   display: flex;
   align-items: center;
@@ -58,13 +57,16 @@ const ChildCenter = styled(Link)`
   width: 100%;
   padding-left: ${({ theme }) => theme.space.generalPadding};
   padding-right: ${({ theme }) => theme.space.generalPadding};
+  :hover {
+    cursor: pointer;
+  }
 `;
 const ChildRight = styled.div`
   color: ${({ way, theme }) =>
     way === 'in' ? theme.colors.green : theme.colors.red};
   padding-left: ${({ theme }) => theme.space.generalPadding};
   padding-right: ${({ theme }) => theme.space.generalPadding};
-  width: 6rem;
+  min-width: 6rem;
   display: flex;
   justify-content: end;
 `;
