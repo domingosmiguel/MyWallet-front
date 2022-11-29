@@ -1,27 +1,19 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
+import useToken from './hooks/useToken';
 import EditRecord from './pages/editRecord';
 import Login from './pages/login';
 import NewRecord from './pages/newRecord';
-import UserRegistration from './pages/userRegistration';
 import Records from './pages/records/records';
+import UserRegistration from './pages/userRegistration';
 import GlobalStyles from './styles/globalStyles';
 import Styles from './styles/Styles';
 
 function App() {
-  const [token, setToken] = useState(null);
-
-  useEffect(() => {
-    const serializedToken = localStorage.getItem('token');
-    if (serializedToken !== null) {
-      const oldToken = JSON.parse(serializedToken);
-      setToken(oldToken);
-    }
-  }, []);
-
+  const { token, setToken } = useToken();
   const theme = extendTheme(Styles);
+
   return (
     <BrowserRouter>
       <GlobalStyles />

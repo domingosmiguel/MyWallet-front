@@ -1,5 +1,5 @@
 import { EmailIcon, LockIcon } from '@chakra-ui/icons';
-import { InputGroup, InputLeftElement, Stack } from '@chakra-ui/react';
+import { Input, InputGroup, InputLeftElement, Stack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
 import { useNavigate } from 'react-router-dom';
@@ -8,8 +8,10 @@ import MainButton from '../components/mainButton';
 import MainLink from '../components/mainLink';
 import useAxiosRequest from '../hooks/useAxiosRequest';
 import useForm from '../hooks/useForm';
+import useGoogleLogin from '../hooks/useGoogleLogin';
 
 export default function Login({ token, setToken }) {
+  useGoogleLogin(setToken);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [login, updateForm] = useForm({
@@ -55,7 +57,7 @@ export default function Login({ token, setToken }) {
                 pointerEvents='none'
                 children={<EmailIcon color='gray.300' />}
               />
-              <InputWrap
+              <Input
                 name='email'
                 onChange={updateForm}
                 value={login.email}
@@ -64,7 +66,7 @@ export default function Login({ token, setToken }) {
                 type='email'
                 placeholder='email'
                 disabled={loading}
-                $isRequired
+                isRequired
               />
             </InputWrap>
             <InputWrap size='lg'>
@@ -72,7 +74,7 @@ export default function Login({ token, setToken }) {
                 pointerEvents='none'
                 children={<LockIcon color='gray.300' />}
               />
-              <InputWrap
+              <Input
                 name='password'
                 onChange={updateForm}
                 value={login.password}
@@ -82,27 +84,13 @@ export default function Login({ token, setToken }) {
                 type='password'
                 placeholder='password'
                 disabled={loading}
-                $isRequired
+                isRequired
               />
             </InputWrap>
           </AllInputs>
           <MainButton isLoading={loading}>Login</MainButton>
         </Form>
-        <div
-          id='g_id_onload'
-          data-client_id='YOUR_GOOGLE_CLIENT_ID'
-          data-login_uri='https://your.domain/your_login_endpoint'
-          data-auto_prompt='false'
-        />
-        <div
-          className='g_id_signin'
-          data-type='icon'
-          data-size='large'
-          data-theme='outline'
-          data-text='sign_in_with'
-          data-shape='square'
-          data-width={40}
-        />
+        <div id='signInButton' />
         <MainLink to='/register' disabled={loading}>
           First time here? Sign-up!
         </MainLink>
@@ -144,7 +132,6 @@ const Logo = styled.p`
 const Form = styled.form`
   max-width: ${({ theme }) => theme.sizes.max};
   width: 100%;
-  height: fit-content;
 `;
 const AllInputs = styled(Stack)`
   margin: 0.25rem 0;
