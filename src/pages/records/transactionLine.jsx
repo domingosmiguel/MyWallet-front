@@ -66,7 +66,6 @@ const ChildRight = styled.div`
     way === 'in' ? theme.colors.green : theme.colors.red};
   padding-left: ${({ theme }) => theme.space.generalPadding};
   padding-right: ${({ theme }) => theme.space.generalPadding};
-  min-width: 6rem;
   display: flex;
   justify-content: end;
 `;
