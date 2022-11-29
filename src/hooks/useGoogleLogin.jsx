@@ -32,7 +32,7 @@ export default function useGoogleLogin(setToken) {
     runAxios(Date.now());
   }
   useEffect(() => {
-    /* global google */
+    const { google } = window;
     google.accounts.id.initialize({
       client_id: clientId,
       callback: handleCallbackResponse,
