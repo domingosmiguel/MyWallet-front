@@ -43,5 +43,5 @@ export default function useGoogleLogin(setToken) {
       size: 'large',
       shape: 'square',
     });
-  });
+  }, []);
 }
