@@ -1,13 +1,13 @@
 import { EmailIcon, LockIcon } from '@chakra-ui/icons';
-import { Input, InputGroup, InputLeftElement, Stack } from '@chakra-ui/react';
+import { InputGroup, InputLeftElement, Stack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from '../components/mainButton';
 import MainLink from '../components/mainLink';
-import useForm from '../hooks/useForm';
 import useAxiosRequest from '../hooks/useAxiosRequest';
+import useForm from '../hooks/useForm';
 
 export default function Login({ token, setToken }) {
   const navigate = useNavigate();
@@ -46,50 +46,67 @@ export default function Login({ token, setToken }) {
   };
   return (
     <Page>
-      <Logo>MyWallet</Logo>
-      <Form onSubmit={handleSubmission}>
-        <AllInputs spacing={0}>
-          <InputWrap size='lg'>
-            <InputLeftElement
-              pointerEvents='none'
-              children={<EmailIcon color='gray.300' />}
-            />
-            <Input
-              name='email'
-              onChange={updateForm}
-              value={login.email}
-              focusBorderColor='main'
-              variant='flushed'
-              type='email'
-              placeholder='email'
-              disabled={loading}
-              isRequired
-            />
-          </InputWrap>
-          <InputWrap size='lg'>
-            <InputLeftElement
-              pointerEvents='none'
-              children={<LockIcon color='gray.300' />}
-            />
-            <Input
-              name='password'
-              onChange={updateForm}
-              value={login.password}
-              pr='1rem'
-              focusBorderColor='main'
-              variant='flushed'
-              type='password'
-              placeholder='password'
-              disabled={loading}
-              isRequired
-            />
-          </InputWrap>
-        </AllInputs>
-        <MainButton isLoading={loading}>Login</MainButton>
-      </Form>
-      <MainLink to='/register' disabled={loading}>
-        First time here? Sign-up!
-      </MainLink>
+      <MySection>
+        <Logo>MyWallet</Logo>
+        <Form onSubmit={handleSubmission}>
+          <AllInputs spacing={0}>
+            <InputWrap size='lg'>
+              <InputLeftElement
+                pointerEvents='none'
+                children={<EmailIcon color='gray.300' />}
+              />
+              <InputWrap
+                name='email'
+                onChange={updateForm}
+                value={login.email}
+                focusBorderColor='main'
+                variant='flushed'
+                type='email'
+                placeholder='email'
+                disabled={loading}
+                $isRequired
+              />
+            </InputWrap>
+            <InputWrap size='lg'>
+              <InputLeftElement
+                pointerEvents='none'
+                children={<LockIcon color='gray.300' />}
+              />
+              <InputWrap
+                name='password'
+                onChange={updateForm}
+                value={login.password}
+                pr='1rem'
+                focusBorderColor='main'
+                variant='flushed'
+                type='password'
+                placeholder='password'
+                disabled={loading}
+                $isRequired
+              />
+            </InputWrap>
+          </AllInputs>
+          <MainButton isLoading={loading}>Login</MainButton>
+        </Form>
+        <div
+          id='g_id_onload'
+          data-client_id='YOUR_GOOGLE_CLIENT_ID'
+          data-login_uri='https://your.domain/your_login_endpoint'
+          data-auto_prompt='false'
+        />
+        <div
+          className='g_id_signin'
+          data-type='icon'
+          data-size='large'
+          data-theme='outline'
+          data-text='sign_in_with'
+          data-shape='square'
+          data-width={40}
+        />
+        <MainLink to='/register' disabled={loading}>
+          First time here? Sign-up!
+        </MainLink>
+      </MySection>
     </Page>
   );
 }
@@ -102,6 +119,21 @@ const Page = styled(Div100vh)`
   align-items: center;
   padding: ${({ theme }) => theme.space.generalPadding};
 `;
+const MySection = styled.section`
+  width: 100%;
+  max-width: ${({ theme }) => `calc(${theme.sizes.max} + 4rem)`};
+  height: fit-content;
+  padding: 2rem;
+  background-color: ${({ theme }) => theme.colors.darkMain};
+  background: ${({ theme }) => theme.colors.main};
+  box-shadow: 1rem 1rem 3rem ${({ theme }) => theme.colors.darkMain},
+    -1rem -1rem 3rem ${({ theme }) => theme.colors.lightMain};
+  border-radius: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 const Logo = styled.p`
   font-family: ${({ theme }) => theme.fonts.logo};
   color: ${({ theme }) => theme.colors.secondary};
@@ -112,6 +144,7 @@ const Logo = styled.p`
 const Form = styled.form`
   max-width: ${({ theme }) => theme.sizes.max};
   width: 100%;
+  height: fit-content;
 `;
 const AllInputs = styled(Stack)`
   margin: 0.25rem 0;
