@@ -31,8 +31,8 @@ export default function useGoogleLogin(setToken) {
     setGoogleCredential({ email, name, sub });
     runAxios(Date.now());
   }
-  // global google
   useEffect(() => {
+    /* global google */
     google.accounts.id.initialize({
       client_id: clientId,
       callback: handleCallbackResponse,

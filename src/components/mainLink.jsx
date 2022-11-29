@@ -15,7 +15,7 @@ const DisabledLink = css`
 const StyledLink = styled(Link)`
   cursor: pointer;
   color: ${({ theme }) => theme.colors.secondary};
-  margin-top: 2rem;
+  margin-top: 1rem;
   font-family: ${({ theme }) => theme.fonts.body};
   font-weight: 700;
   ${({ disabled }) => disabled && DisabledLink};

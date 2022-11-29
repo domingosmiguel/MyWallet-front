@@ -132,6 +132,7 @@ const Logo = styled.p`
 const Form = styled.form`
   max-width: ${({ theme }) => theme.sizes.max};
   width: 100%;
+  margin-bottom: 1rem;
 `;
 const AllInputs = styled(Stack)`
   margin: 0.25rem 0;
