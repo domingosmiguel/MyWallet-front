@@ -2,7 +2,7 @@ const Styles = {
   colors: {
     darkMain: '#6f0d96',
     main: '#8c11be',
-    lightMain: '#a328d6',
+    lightMain: '#af29e8',
     secondary: '#fff',
     letters: '#000',
     grayLetters: '#868686',

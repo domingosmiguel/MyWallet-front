@@ -38,10 +38,10 @@ export default function useGoogleLogin(setToken) {
       callback: handleCallbackResponse,
     });
     google.accounts.id.renderButton(document.getElementById('signInButton'), {
-      type: 'icon',
       theme: 'outline',
       size: 'large',
-      shape: 'square',
+      shape: 'circle',
+      width: 240,
     });
   }, []);
 }
