@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAxiosRequest from './useAxiosRequest';
 
-export default function useGoogleLogin(setToken) {
+export default function useGoogleLogin(setToken, setLoading) {
   const navigate = useNavigate();
   const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
@@ -20,8 +20,10 @@ export default function useGoogleLogin(setToken) {
       setToken(data.data);
       const serializedToken = JSON.stringify(data.data);
       localStorage.setItem('token', serializedToken);
+      setLoading(false);
       navigate('/records');
     } else if (loaded) {
+      setLoading(false);
       console.log(error);
     }
   }, [data, error]);
@@ -29,6 +31,7 @@ export default function useGoogleLogin(setToken) {
   function handleCallbackResponse(response) {
     const { email, name, sub } = jwtDecode(response.credential);
     setGoogleCredential({ email, name, sub });
+    setLoading(true);
     runAxios(Date.now());
   }
   useEffect(() => {

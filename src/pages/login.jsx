@@ -11,7 +11,6 @@ import useForm from '../hooks/useForm';
 import useGoogleLogin from '../hooks/useGoogleLogin';
 
 export default function Login({ token, setToken }) {
-  useGoogleLogin(setToken);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [login, updateForm] = useForm({
@@ -24,6 +23,9 @@ export default function Login({ token, setToken }) {
     'post',
     login
   );
+
+  useGoogleLogin(setToken, setLoading);
+
   useEffect(() => {
     if (token !== null) {
       navigate('/records');
