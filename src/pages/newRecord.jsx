@@ -1,4 +1,4 @@
-import { Icon, ChevronLeftIcon } from '@chakra-ui/icons';
+import { ChevronLeftIcon, Icon } from '@chakra-ui/icons';
 import { Input, InputGroup, InputLeftElement, Stack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
@@ -8,8 +8,8 @@ import { SiCashapp } from 'react-icons/si';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from '../components/mainButton';
-import useForm from '../hooks/useForm';
 import useAxiosRequest from '../hooks/useAxiosRequest';
+import useForm from '../hooks/useForm';
 
 export default function NewRecord({ token }) {
   const { way } = useParams();
@@ -17,7 +17,7 @@ export default function NewRecord({ token }) {
   const [loading, setLoading] = useState(false);
   const [newData, updateForm] = useForm({
     date: '',
-    value: '',
+    value: '0.00',
     description: '',
   });
 
