@@ -1,8 +1,8 @@
 # MyWallet SaaS
 
-A Simple and Stylish Personal Finance Manager
+### A Simple and Stylish Personal Finance Manager
 
-This project showcases a personal finance manager built with React, Chakra UI, and Google Account integration. Its clean and user-friendly interface makes managing your finances a breeze.
+This project showcases a personal finance manager built with React, Chakra UI, and Google Account integration. It's clean and user-friendly interface makes managing your finances a breeze.
 
 ## Features
 
