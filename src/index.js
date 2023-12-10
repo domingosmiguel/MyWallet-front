@@ -1,11 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import StylesProvider from './contexts/stylesContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <StylesProvider>
+      <App />
+    </StylesProvider>
   </React.StrictMode>
 );
 

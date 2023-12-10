@@ -1,6 +1,4 @@
-import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
 import useToken from './hooks/useToken';
 import EditRecord from './pages/editRecord';
 import Login from './pages/login';
@@ -8,43 +6,26 @@ import NewRecord from './pages/newRecord';
 import NotFound from './pages/notFound';
 import Records from './pages/records/records';
 import UserRegistration from './pages/userRegistration';
-import Styles from './styles/Styles';
-import GlobalStyles from './styles/globalStyles';
 
 function App() {
   const { token, setToken } = useToken();
-  const theme = extendTheme(Styles);
 
   return (
     <BrowserRouter>
-      <GlobalStyles />
-      <ChakraProvider theme={theme}>
-        <ThemeProvider theme={Styles}>
-          <Routes>
-            <Route
-              path='/'
-              element={<Login token={token} setToken={setToken} />}
-            />
-            <Route
-              path='/register'
-              element={<UserRegistration token={token} />}
-            />
-            <Route
-              path='/records'
-              element={<Records token={token} setToken={setToken} />}
-            />
-            <Route path='/record/:way' element={<NewRecord token={token} />} />
-            <Route
-              path='/record/edit/:id'
-              element={<EditRecord token={token} />}
-            />
-            <Route
-              path='*'
-              element={<NotFound token={token} setToken={setToken} />}
-            />
-          </Routes>
-        </ThemeProvider>
-      </ChakraProvider>
+      <Routes>
+        <Route path='/' element={<Login token={token} setToken={setToken} />} />
+        <Route path='/register' element={<UserRegistration token={token} />} />
+        <Route
+          path='/records'
+          element={<Records token={token} setToken={setToken} />}
+        />
+        <Route path='/record/:way' element={<NewRecord token={token} />} />
+        <Route path='/record/edit/:id' element={<EditRecord token={token} />} />
+        <Route
+          path='*'
+          element={<NotFound token={token} setToken={setToken} />}
+        />
+      </Routes>
     </BrowserRouter>
   );
 }
