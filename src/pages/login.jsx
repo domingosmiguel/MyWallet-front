@@ -96,7 +96,7 @@ export default function Login({ token, setToken }) {
                 name='password'
                 onChange={updateForm}
                 value={login.password}
-                pr='1rem'
+                pr='4.5rem'
                 focusBorderColor='main'
                 variant='flushed'
                 type={show ? 'text' : 'password'}
@@ -104,7 +104,7 @@ export default function Login({ token, setToken }) {
                 disabled={loading}
                 isRequired
               />
-              <InputRightElement width='10.5rem'>
+              <InputRightElement width='4.5rem'>
                 <Button h='1.75rem' size='sm' onClick={handleClick}>
                   {show ? 'Hide' : 'Show'}
                 </Button>

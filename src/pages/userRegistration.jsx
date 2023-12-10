@@ -121,7 +121,7 @@ export default function UserRegistration() {
                 name='password'
                 onChange={updateForm}
                 value={login.password}
-                pr='1rem'
+                pr='4.5rem'
                 focusBorderColor='main'
                 variant='flushed'
                 type={showPw ? 'text' : 'password'}
@@ -144,7 +144,7 @@ export default function UserRegistration() {
                 name='repeatPassword'
                 onChange={updateForm}
                 value={login.repeatPassword}
-                pr='1rem'
+                pr='4.5rem'
                 focusBorderColor='main'
                 variant='flushed'
                 type={showRepeatPw ? 'text' : 'password'}
