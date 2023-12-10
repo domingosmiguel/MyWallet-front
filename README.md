@@ -53,7 +53,7 @@ This is an open-source project! Feel free to contribute by reporting issues and 
 ![Git](https://img.shields.io/badge/GIT-E44C30?style=for-the-badge&logo=git&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
-## Contact
+## Connect with the Developer
 
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
