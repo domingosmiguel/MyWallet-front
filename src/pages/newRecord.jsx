@@ -1,6 +1,6 @@
 import { ChevronLeftIcon, Icon } from '@chakra-ui/icons';
 import { Input, InputGroup, InputLeftElement, Stack } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
 import { BsFillCalendarFill } from 'react-icons/bs';
 import { GoTextSize } from 'react-icons/go';
@@ -8,6 +8,7 @@ import { SiCashapp } from 'react-icons/si';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from '../components/mainButton';
+import toastContext from '../contexts/toastContext';
 import useAxiosRequest from '../hooks/useAxiosRequest';
 import useForm from '../hooks/useForm';
 
@@ -24,6 +25,7 @@ export default function NewRecord({ token }) {
     }
   }, []);
 
+  const toast = useContext(toastContext);
   const [loading, setLoading] = useState(false);
   const [newData, updateForm] = useForm({
     date: '',
@@ -31,7 +33,7 @@ export default function NewRecord({ token }) {
     description: '',
   });
 
-  const [[data, error, loaded], runAxios] = useAxiosRequest(
+  const [[response, error, loaded], runAxios] = useAxiosRequest(
     false,
     `/record/${way}`,
     'post',
@@ -42,10 +44,14 @@ export default function NewRecord({ token }) {
   );
   useEffect(() => {
     if (loaded) {
+      toast({
+        title: response ? 'success' : 'error',
+        status: response ? 'success' : 'error',
+        description: (response ? response?.data : error?.response?.data) ?? '',
+      });
       navigate('/records');
-      if (error) console.log(error);
     }
-  }, [data, error]);
+  }, [response, error]);
   const handleSubmission = (e) => {
     e.preventDefault();
     setLoading(true);

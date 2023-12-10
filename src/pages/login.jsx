@@ -1,23 +1,25 @@
 import { EmailIcon, LockIcon } from '@chakra-ui/icons';
 import { Input, InputGroup, InputLeftElement, Stack } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from '../components/mainButton';
 import MainLink from '../components/mainLink';
+import toastContext from '../contexts/toastContext';
 import useAxiosRequest from '../hooks/useAxiosRequest';
 import useForm from '../hooks/useForm';
 import useGoogleLogin from '../hooks/useGoogleLogin';
 
 export default function Login({ token, setToken }) {
+  const toast = useContext(toastContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [login, updateForm] = useForm({
     email: '',
     password: '',
   });
-  const [[data, error, loaded], runAxios] = useAxiosRequest(
+  const [[response, error, loaded], runAxios] = useAxiosRequest(
     false,
     '/sign-in',
     'post',
@@ -32,16 +34,20 @@ export default function Login({ token, setToken }) {
     }
   });
   useEffect(() => {
-    if (data && loaded) {
-      setToken(data.data);
-      const serializedToken = JSON.stringify(data.data);
+    if (response && loaded) {
+      setToken(response.data);
+      const serializedToken = JSON.stringify(response.data);
       localStorage.setItem('token', serializedToken);
       navigate('/records');
     } else if (loaded) {
-      console.log(error);
+      toast({
+        title: 'error',
+        status: 'error',
+        description: error?.response?.data ?? '',
+      });
       setLoading(false);
     }
-  }, [data, error]);
+  }, [response, error]);
 
   const handleSubmission = (e) => {
     e.preventDefault();
