@@ -1,27 +1,28 @@
-import { Icon, ChevronLeftIcon } from '@chakra-ui/icons';
+import { ChevronLeftIcon, Icon } from '@chakra-ui/icons';
 import {
   Input,
   InputGroup,
   InputLeftElement,
   Select,
-  Skeleton,
   Stack,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
 import { BsFillCalendarFill } from 'react-icons/bs';
-import { TbArrowsUpDown } from 'react-icons/tb';
 import { GoTextSize } from 'react-icons/go';
 import { SiCashapp } from 'react-icons/si';
+import { TbArrowsUpDown } from 'react-icons/tb';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from '../components/mainButton';
-import useForm from '../hooks/useForm';
+import toastContext from '../contexts/toastContext';
 import useAxiosRequest from '../hooks/useAxiosRequest';
+import useForm from '../hooks/useForm';
 
 export default function EditRecord({ token }) {
   const { id } = useParams();
   const navigate = useNavigate();
+  const toast = useContext(toastContext);
   const [loading, setLoading] = useState(true);
   const [editData, updateForm, setForm] = useForm({
     date: '',
@@ -29,7 +30,7 @@ export default function EditRecord({ token }) {
     description: '',
     way: '',
   });
-  const [[dataGet, errorGet, loadedGet]] = useAxiosRequest(
+  const [[responseGet, errorGet, loadedGet]] = useAxiosRequest(
     true,
     `/record/edit/${id}`,
     'get',
@@ -39,16 +40,22 @@ export default function EditRecord({ token }) {
     }
   );
   useEffect(() => {
-    if (dataGet && loadedGet) {
-      setForm(dataGet.data);
-      setLoading(false);
-    } else if (loadedGet) {
-      console.log(errorGet);
-      navigate('/');
+    if (loadedGet) {
+      if (responseGet) {
+        setForm(responseGet.data);
+        setLoading(false);
+      } else {
+        toast({
+          title: 'error',
+          status: 'error',
+          description: errorGet?.response?.data ?? '',
+        });
+        navigate('/');
+      }
     }
-  }, [dataGet, errorGet]);
+  }, [responseGet, errorGet]);
 
-  const [[dataPut, errorPut, loadedPut], setRunAxiosPut] = useAxiosRequest(
+  const [[responsePut, errorPut, loadedPut], setRunAxiosPut] = useAxiosRequest(
     false,
     `/record/edit/${id}`,
     'put',
@@ -59,10 +66,15 @@ export default function EditRecord({ token }) {
   );
   useEffect(() => {
     if (loadedPut) {
+      toast({
+        title: responsePut ? 'success' : 'error',
+        status: responsePut ? 'success' : 'error',
+        description:
+          (responsePut ? responsePut?.data : errorPut?.response?.data) ?? '',
+      });
       navigate('/records');
-      if (errorPut) console.log(errorPut);
     }
-  }, [dataPut, errorPut]);
+  }, [responsePut, errorPut]);
   const handleSubmission = (e) => {
     e.preventDefault();
     setLoading(true);

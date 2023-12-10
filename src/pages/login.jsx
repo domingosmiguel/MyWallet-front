@@ -19,7 +19,7 @@ export default function Login({ token, setToken }) {
     email: '',
     password: '',
   });
-  const [[data, error, loaded], runAxios] = useAxiosRequest(
+  const [[response, error, loaded], runAxios] = useAxiosRequest(
     false,
     '/sign-in',
     'post',
@@ -34,19 +34,20 @@ export default function Login({ token, setToken }) {
     }
   });
   useEffect(() => {
-    if (data && loaded) {
-      setToken(data.data);
-      const serializedToken = JSON.stringify(data.data);
+    if (response && loaded) {
+      setToken(response.data);
+      const serializedToken = JSON.stringify(response.data);
       localStorage.setItem('token', serializedToken);
       navigate('/records');
     } else if (loaded) {
-      console.log(error);
-      setLoading(false);
       toast({
         title: 'error',
+        status: 'error',
+        description: error?.response?.data ?? '',
       });
+      setLoading(false);
     }
-  }, [data, error]);
+  }, [response, error]);
 
   const handleSubmission = (e) => {
     e.preventDefault();

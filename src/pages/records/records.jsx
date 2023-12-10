@@ -8,21 +8,23 @@ import {
   StackDivider,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
+import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
-import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import TransactionLine from './transactionLine';
 import MyModal from '../../components/myModal';
+import toastContext from '../../contexts/toastContext';
 import firstLetterToUpperCase from '../../functions/firstLetterToUpperCase';
-import useLogout from '../../hooks/useLogout';
 import useAxiosRequest from '../../hooks/useAxiosRequest';
 import useDeleteData from '../../hooks/useDeleteData';
 import useFirstRender from '../../hooks/useFirstRender';
+import useLogout from '../../hooks/useLogout';
+import TransactionLine from './transactionLine';
 
 export default function Records({ token, setToken }) {
+  const toast = useContext(toastContext);
   const [loading, setLoading] = useState(true);
   const [records, setRecords] = useState([]);
   const [user, setUser] = useState(null);
@@ -52,7 +54,11 @@ export default function Records({ token, setToken }) {
       setUser(response.data.user);
       setLoading(false);
     } else if (loaded) {
-      console.log(error);
+      toast({
+        title: 'error',
+        status: 'error',
+        description: error?.response?.data ?? '',
+      });
       logout(Date.now());
     }
   }, [response, error]);

@@ -6,17 +6,19 @@ import {
   InputLeftElement,
   Stack,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from '../components/mainButton';
 import MainLink from '../components/mainLink';
+import toastContext from '../contexts/toastContext';
 import useAxiosRequest from '../hooks/useAxiosRequest';
 import useForm from '../hooks/useForm';
 
 export default function UserRegistration() {
+  const toast = useContext(toastContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [login, updateForm] = useForm({
@@ -32,15 +34,13 @@ export default function UserRegistration() {
     login
   );
   useEffect(() => {
-    if (response && loaded) {
-      console.log({
-        [response.data]: response.data,
-        [response.status]: response.status,
+    if (loaded) {
+      toast({
+        title: response ? 'success' : 'error',
+        status: response ? 'success' : 'error',
+        description: (response ? response?.data : error?.response?.data) ?? '',
       });
-      navigate('/');
-    } else if (loaded) {
-      console.log(error);
-      setLoading(false);
+      response ? navigate('/') : setLoading(false);
     }
   }, [response, error]);
 
