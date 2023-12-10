@@ -6,7 +6,7 @@ This project showcases a personal finance manager built with React, Chakra UI, a
 
 ## Features
 
--   **Personalized react hooks:** Simplify forms, validation, updates, axios requests, and user logout.
+-   **Personalized react hooks:** Simplify forms validation and updates, axios requests, user logout, etc.
 -   **Context API:** Provides global application state and eliminates prop drilling.
 -   **Chakra UI:** Streamlines component styling with beautiful and customizable themes.
 -   **Google account access:** Enables quick and convenient login for new users.
