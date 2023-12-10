@@ -1,24 +1,23 @@
-# **MyWallet Saas**
+# MyWallet SaaS
 
-The main purpose of the app is to be a easy-to-use personal cash flow manager.
+A Simple and Stylish Personal Finance Manager
 
-## **Exercised Contents**:
+This project showcases a personal finance manager built with React, Chakra UI, and Google Account integration. Its clean and user-friendly interface makes managing your finances a breeze.
 
--   Personalized react hooks to abstract forms validation/update, axios requests, user logout, etc
--   Context to provide informations all across the app and avoid prop drilling
--   Chakra UI to easier components styling
--   Access with Google Accounts to make it easier for new users
--   Browser tab costumazation
+## Features
 
-## **Results**:
+-   **Personalized react hooks:** Simplify forms, validation, updates, axios requests, and user logout.
+-   **Context API:** Provides global application state and eliminates prop drilling.
+-   **Chakra UI:** Streamlines component styling with beautiful and customizable themes.
+-   **Google account access:** Enables quick and convenient login for new users.
+-   **Browser tab customization:** Personalize your experience with tab titles and favicons.
+-   **Responsive design:** Optimized for mobile and desktop screens.
 
-I saw in this project an opportunity to play with stylized components and Chakra UI. I implemented some cool animations and skeletons for loading data, many personalized hooks to make a more readble and maintainable code, and got a nice app.
+## See it in action!
 
-![GIFs coming soon]()
+Live Demo: [Vercel](https://mywallet-snowy.vercel.app/)
 
-To show the result, the application was posted on [Vercel](https://mywallet-snowy.vercel.app/)! It is responsive but you will have a better experience on mobile.
-
-## **How to run**:
+## Get started
 
 1. Clone this repository
 
@@ -40,7 +39,11 @@ $ npm start
 
 4. Finally access http://localhost:3000 on a browser of your choice (if it doesn't automatically)
 
-## Built with:
+## Contributing
+
+This is an open-source project! Feel free to contribute by reporting issues and submitting pull requests.
+
+## Built with
 
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
@@ -50,7 +53,7 @@ $ npm start
 ![Git](https://img.shields.io/badge/GIT-E44C30?style=for-the-badge&logo=git&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
-## Contact:
+## Contact
 
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
