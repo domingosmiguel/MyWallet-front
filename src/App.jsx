@@ -5,10 +5,11 @@ import useToken from './hooks/useToken';
 import EditRecord from './pages/editRecord';
 import Login from './pages/login';
 import NewRecord from './pages/newRecord';
+import NotFound from './pages/notFound';
 import Records from './pages/records/records';
 import UserRegistration from './pages/userRegistration';
-import GlobalStyles from './styles/globalStyles';
 import Styles from './styles/Styles';
+import GlobalStyles from './styles/globalStyles';
 
 function App() {
   const { token, setToken } = useToken();
@@ -23,7 +24,6 @@ function App() {
             <Route
               path='/'
               element={<Login token={token} setToken={setToken} />}
-              exact
             />
             <Route
               path='/register'
@@ -37,6 +37,10 @@ function App() {
             <Route
               path='/record/edit/:id'
               element={<EditRecord token={token} />}
+            />
+            <Route
+              path='*'
+              element={<NotFound token={token} setToken={setToken} />}
             />
           </Routes>
         </ThemeProvider>

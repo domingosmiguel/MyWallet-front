@@ -14,6 +14,16 @@ import useForm from '../hooks/useForm';
 export default function NewRecord({ token }) {
   const { way } = useParams();
   const navigate = useNavigate();
+
+  const options = ['in', 'out'];
+
+  useEffect(() => {
+    if (!options.includes(way)) {
+      console.error('Route not found');
+      navigate('/');
+    }
+  }, []);
+
   const [loading, setLoading] = useState(false);
   const [newData, updateForm] = useForm({
     date: '',
