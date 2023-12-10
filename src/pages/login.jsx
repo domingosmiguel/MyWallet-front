@@ -1,5 +1,12 @@
 import { EmailIcon, LockIcon } from '@chakra-ui/icons';
-import { Input, InputGroup, InputLeftElement, Stack } from '@chakra-ui/react';
+import {
+  Button,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  Stack,
+} from '@chakra-ui/react';
 import { useContext, useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +21,7 @@ import useGoogleLogin from '../hooks/useGoogleLogin';
 export default function Login({ token, setToken }) {
   const toast = useContext(toastContext);
   const navigate = useNavigate();
+  const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [login, updateForm] = useForm({
     email: '',
@@ -48,6 +56,8 @@ export default function Login({ token, setToken }) {
       setLoading(false);
     }
   }, [response, error]);
+
+  const handleClick = () => setShow(!show);
 
   const handleSubmission = (e) => {
     e.preventDefault();
@@ -89,11 +99,16 @@ export default function Login({ token, setToken }) {
                 pr='1rem'
                 focusBorderColor='main'
                 variant='flushed'
-                type='password'
+                type={show ? 'text' : 'password'}
                 placeholder='password'
                 disabled={loading}
                 isRequired
               />
+              <InputRightElement width='10.5rem'>
+                <Button h='1.75rem' size='sm' onClick={handleClick}>
+                  {show ? 'Hide' : 'Show'}
+                </Button>
+              </InputRightElement>
             </InputWrap>
           </AllInputs>
           <MainButton isLoading={loading}>Login</MainButton>

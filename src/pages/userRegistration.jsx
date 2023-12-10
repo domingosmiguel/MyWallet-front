@@ -1,12 +1,14 @@
 import { EmailIcon, LockIcon, UnlockIcon } from '@chakra-ui/icons';
 import {
+  Button,
   Icon,
   Input,
   InputGroup,
   InputLeftElement,
+  InputRightElement,
   Stack,
 } from '@chakra-ui/react';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import Div100vh from 'react-div-100vh';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +22,8 @@ import useForm from '../hooks/useForm';
 export default function UserRegistration() {
   const toast = useContext(toastContext);
   const navigate = useNavigate();
+  const [showPw, setShowPw] = useState(false);
+  const [showRepeatPw, setShowRepeatPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [login, updateForm] = useForm({
     name: '',
@@ -43,6 +47,26 @@ export default function UserRegistration() {
       response ? navigate('/') : setLoading(false);
     }
   }, [response, error]);
+
+  const inputNames = useMemo(
+    () => ({
+      pw: 'password',
+      repeatPw: 'repeatPassword',
+    }),
+    []
+  );
+  const showInput = useMemo(
+    () => ({
+      [inputNames.pw]: () => setShowPw(!showPw),
+      [inputNames.repeatPw]: () => setShowRepeatPw(!showRepeatPw),
+    }),
+    [showPw, showRepeatPw]
+  );
+  const handleClick = (event) => {
+    const eventInputName =
+      event?.target?.parentElement?.parentElement?.childNodes?.[1]?.name;
+    showInput?.[eventInputName]();
+  };
 
   const handleSubmission = (e) => {
     e.preventDefault();
@@ -100,11 +124,16 @@ export default function UserRegistration() {
                 pr='1rem'
                 focusBorderColor='main'
                 variant='flushed'
-                type='password'
+                type={showPw ? 'text' : 'password'}
                 placeholder='password'
                 disabled={loading}
                 isRequired
               />
+              <InputRightElement width='4.5rem'>
+                <Button h='1.75rem' size='sm' onClick={handleClick}>
+                  {showPw ? 'Hide' : 'Show'}
+                </Button>
+              </InputRightElement>
             </InputWrap>
             <InputWrap size='lg'>
               <InputLeftElement
@@ -118,11 +147,16 @@ export default function UserRegistration() {
                 pr='1rem'
                 focusBorderColor='main'
                 variant='flushed'
-                type='password'
+                type={showRepeatPw ? 'text' : 'password'}
                 placeholder='repeat password'
                 disabled={loading}
                 isRequired
               />
+              <InputRightElement width='4.5rem'>
+                <Button h='1.75rem' size='sm' onClick={handleClick}>
+                  {showRepeatPw ? 'Hide' : 'Show'}
+                </Button>
+              </InputRightElement>
             </InputWrap>
           </AllInputs>
           <MainButton isLoading={loading}>Register</MainButton>
