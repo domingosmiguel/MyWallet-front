@@ -1,16 +1,18 @@
 import { EmailIcon, LockIcon } from '@chakra-ui/icons';
 import { Input, InputGroup, InputLeftElement, Stack } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from '../components/mainButton';
 import MainLink from '../components/mainLink';
+import toastContext from '../contexts/toastContext';
 import useAxiosRequest from '../hooks/useAxiosRequest';
 import useForm from '../hooks/useForm';
 import useGoogleLogin from '../hooks/useGoogleLogin';
 
 export default function Login({ token, setToken }) {
+  const toast = useContext(toastContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [login, updateForm] = useForm({
@@ -40,6 +42,9 @@ export default function Login({ token, setToken }) {
     } else if (loaded) {
       console.log(error);
       setLoading(false);
+      toast({
+        title: 'error',
+      });
     }
   }, [data, error]);
 
