@@ -1,3 +1,6 @@
+import { extendTheme } from '@chakra-ui/react';
+import { alertTheme } from '../components/alert';
+
 const Styles = {
   colors: {
     darkMain: '#6f0d96',
@@ -9,6 +12,8 @@ const Styles = {
     lightLetters: '#c6c6c6',
     green: '#03ac00',
     red: '#c70000',
+    orange: '#eaba0e',
+    blue: '#1275d2',
   },
   fonts: {
     body: "'Raleway', sans-serif",
@@ -22,4 +27,9 @@ const Styles = {
   },
 };
 
-export default Styles;
+const theme = extendTheme({
+  ...Styles,
+  components: { Alert: alertTheme },
+});
+
+export { Styles, theme };
